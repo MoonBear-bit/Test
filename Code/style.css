@@ -1,0 +1,99 @@
+body{
+    position: absolute;
+    background-color: black;
+}
+.Lobby{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+}
+.Entity{
+    position: absolute;
+    width: 1.75vw;
+    height: 1.75vw;
+    background-color: white;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+.Entity:hover{
+    background-color: gray;
+    transform: scale(1.1) translate(-50%, -50%);
+}
+.Entity:active{
+    background-color: darkgray;
+    transform: scale(1.2) translate(-50%, -50%);
+}
+.centerW{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.centerH{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.publicText{
+    color: white;
+    cursor: pointer;
+}
+.publicText:hover{
+    color: gray;
+}
+.publicButton{
+    background-color: black;
+    border: 0.25vw solid white;
+    border-radius: 20%;
+    color: white;
+    cursor: pointer;
+}
+.publicButton:hover{
+    background-color: gray;
+    color: white;
+}
+.Window{
+    font-size: 2vw; 
+    border: 0.25vw solid white;
+    background-color: black;
+    color: white;
+    transform: translate(-50%, -50%);
+}
+.publicSelect{
+    font-size: 2vw;
+    border: 0.25vw solid white;
+    color: white;
+    background-color: black;
+    cursor: pointer;
+}
+.publicSelect:hover{
+    background-color: gray;
+}
+.Selector{
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.75);
+    border: 0.25vw dashed white;
+}
+.Layer-Background{
+    z-index: 1;
+    color: white;
+}
+.Layer-Object{
+    z-index: 10;
+}
+.Layer-Object-UI{
+    z-index: 15;
+}
+.Layer-UI{
+    z-index: 20;
+    color: white;
+}
+.Layer-UI-Window{
+    z-index: 30;
+    color: white;
+}
+.Layer-Infinity{
+    z-index: 40;
+}

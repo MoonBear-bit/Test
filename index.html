@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./Code/style.css">
+    <title>the South</title>
+</head>
+<body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
+    <!--로비-->
+    <div id="Lobby" class="Lobby Layer-Background">
+        <!--로고-->
+        <a href="https://dotgaebear-bit.itch.io/">
+            <img src="./Image/Dotgaebear-bit - Obj.png" alt="Dotgaebear-bit" title="Dotgaebear-bit" 
+            style="position: absolute; top: 0px; left: 0px; width: 10vw; height: 10vw; cursor: pointer;">
+        </a>
+        <p class="centerW publicText Layer-UI" style="font-size: 5vw; transform: translate(-50%, -50%);" id="tx-title"><strong>the South</strong></p> 
+        <p class="Layer-UI" style="position: absolute; top: 35vh; left: 33vw; font-size: 1vw;" id="tx-tutorial">
+            <strong>Tutorial</strong> <input type="checkbox" class="publicButton" style="height: 1.25vw; width: 1.25vw;" id="tutorialCheckBox">
+        </p>
+        <button class="publicButton centerW Layer-UI" style="width: 20%; height: 10%; font-size: 2.5vw; top: 30%;" id="newGame"><strong>New Game</strong></button>
+        <button class="publicButton centerW Layer-UI" style="width: 20%; height: 10%; font-size: 2.5vw; top: 45%;" id="loadGame"><strong>Load Game</strong></button>
+        <button class="publicButton centerW Layer-UI" style="width: 20%; height: 10%; font-size: 2.5vw; top: 60%;" id="settingGame"><strong>Setting</strong></button>
+    </div>
+    <!--설정창-->
+    <div class="centerW centerH Layer-UI-Window Window" style="width: 90%; height: 90%; " id="settingWindow">
+        <label for="languageSelect" id="tx-language">Language</label>
+        <select name="languageSelect" id="languageSelect" class="publicSelect">
+            <option value="en" id="tx-en">English</option>
+            <option value="kr" id="tx-kr">한국어</option>
+        </select>
+        <button class="publicButton centerW" style="width: 14%; height: 8%; font-size: 2.5vw; top: 90%;" id="settingEnd"><strong>END</strong></button>
+    </div>
+    <!--대화창-->
+    <div class="centerH centerW Layer-Infinity" 
+        style="width: 100%; height: 101%; background-color: rgba(255, 255, 255, 0.35);top: -10px; left: -10px; transform: translate(0, 0);"
+        id="talkWindow">
+        <div class="centerW" 
+            style="top: 80%; width: 90%; height: 15%; background-color: white; font-size: 2.5vw; border: 0.5vw solid black; cursor: pointer; border-radius: 20%; text-align: center; align-content: center;"
+            id="talkBox"></div>
+    </div>
+    <!--드래그 선택 UI-->
+    <div class="Layer-Object-UI Selector" id="Selector"></div>
+    <script src="./Code/script.js"></script>
+</body>
+</html>
