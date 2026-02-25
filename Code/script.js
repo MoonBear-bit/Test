@@ -80,8 +80,8 @@ class Item{
     constructor(kind){
         this.object = document.createElement("div")
         this.object.className = "Item Layer-Object"
-        this.object.left = `${Math.random() * 100}vw`
-        this.object.top = `${Math.random() *  100}vh`
+        this.object.style.left = `${Math.random() * 100}vw`
+        this.object.style.top = `${Math.random() *  100}vh`
         switch(kind){
             case itemsKind.gold:
                 this.object.title = "Gold"
@@ -187,7 +187,25 @@ class Entity{
     }
     /**매 프레임 실행하시오 */
     Update() {
-        this.object.title = `${this.object.id}-${this.data.nowState}`
+        let nowStateTXT = "";
+        switch (this.data.nowState){
+            case entityState.Attack:
+                nowStateTXT = "Attack";
+                break;
+            case entityState.Die:
+                nowStateTXT = "Died";
+                break;
+            case entityState.Idle:
+                nowStateTXT = "Idle";
+                break;
+            case entityState.Move:
+                nowStateTXT = "Move";
+                break;
+            case entityState.Work:
+                nowStateTXT = "Work";
+                break;
+        }
+        this.object.title = `${this.object.id}  (${nowStateTXT})`
         if (this.data.nowState == entityState.Die){
             this.object.style.backgroundColor = 'darkred';
             return;
@@ -437,9 +455,33 @@ function startGame(isFirst = false){
         items.rock = _load("rock")
         items.iron = _load("iron")
     }
+    createItem()
     setInterval(() => {
         Save()
     }, 100);
+    setInterval(() => {
+        createItem()
+    }, 10000)
+}
+function createItem(){
+    let whatIsThis = Math.floor(Math.random() * 5)
+    switch(whatIsThis){
+        case 0:
+            new Item(itemsKind.gold);
+            break;
+        case 1:
+            new Item(itemsKind.diamond);
+            break;
+        case 2:
+            new Item(itemsKind.wood);
+            break;
+        case 3:
+            new Item(itemsKind.rock);
+            break;
+        case 4:
+            new Item(itemsKind.iron);
+            break;
+    }
 }
 function Tutorial(){
     Say(_lang("Welcome!", "환영합니다!"), () => {
