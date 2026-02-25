@@ -202,8 +202,8 @@ document.addEventListener("mousemove", (event) => {
         Selector.style.width = `${Math.abs(event.clientX - clickedX)}px`
         Selector.style.height = `${Math.abs(event.clientY - clickedY)}px`
         if (event.clientX <clickedX || event.clientY < clickedY){
-            isDrag = false
-            Selector.style.display = _dis(false)
+            Selector.style.width = "0px"
+            Selector.style.height = "0px"
         }
     }
 })
@@ -221,29 +221,29 @@ document.addEventListener("touchstart", (event) => {
         element.Select()
     });
     isDrag = true;
-    clickedX = mouseX;
-    clickedY = mouseY;
+    clickedX = event.touches[0].clientX;
+    clickedY = event.touches[0].clientY;
     Selector.style.display = _dis(true)
     Selector.style.top = `${clickedY}px`;
     Selector.style.left = `${clickedX}px`;
-    Selector.style.width = `${Math.abs(event.clientX - clickedX)}px`
-    Selector.style.height = `${Math.abs(event.clientY - clickedY)}px`
+    Selector.style.width = `${Math.abs(event.touches[0].clientX - clickedX)}px`
+    Selector.style.height = `${Math.abs(event.touches[0].clientY - clickedY)}px`
 })
 document.addEventListener("touchmove", (event) => {
     if (isDrag){
         Selector.style.display = _dis(true)
         Selector.style.top = `${clickedY}px`;
         Selector.style.left = `${clickedX}px`;
-        Selector.style.width = `${Math.abs(event.clientX - clickedX)}px`
-        Selector.style.height = `${Math.abs(event.clientY - clickedY)}px`
+        Selector.style.width = `${event.touches[0].clientX - clickedX}px`
+        Selector.style.height = `${event.touches[0].clientY - clickedY}px`
         if (event.clientX <clickedX || event.clientY < clickedY){
-            isDrag = false
-            Selector.style.display = _dis(false)
+            Selector.style.width = "0px"
+            Selector.style.height = "0px"
         }
     }
 })
-document.addEventListener("touchcancel", (event) => {
-    if (event.button == 0 && isDrag){
+document.addEventListener("touchend", () => {
+    if (isDrag){
         isDrag = false
         EntityList.forEach(element => {
             element.Select()
