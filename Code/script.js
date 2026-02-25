@@ -224,9 +224,9 @@ class Entity{
                 this.object.style.left = `${x + ((_vw(mouseX) <= x)? ((_vw(mouseX) == x)? 0:-0.1):0.1)}vw`
             }
         }
-        if (this.data.selected){
+        if (this.data.selected && this.data.nowState != entityState.Work){
             this.data.nowState = entityState.Move
-        }else{
+        }else if (this.data.nowState != entityState.Work){
             this.data.nowState = entityState.Idle
         }
         switch (this.data.nowState){
@@ -420,8 +420,11 @@ function _load(name){
 }
 /**vw로 리턴 */
 function _distance(obj1, obj2){
-    return Math.sqrt((Number(obj1.style.left.replace("vw","")) - Number(obj2.style.left.replace("vw","")))**2 + 
-        (vw(_vhPx(Number(obj1.style.height.replace("vh","")))) - vw(_vhPx(Number(obj2.style.height.replace("vh","")))))**2)
+    let obj1X = Number(obj1.style.left.replace("vw",""))
+    let obj2X = Number(obj2.style.left.replace("vw",""))
+    let obj1Y = _vw(_vhPx(Number(obj1.style.top.replace("vh",""))))
+    let obj2Y = _vw(_vhPx(Number(obj2.style.top.replace("vh",""))))
+    return Math.sqrt((obj1X-obj2X)**2 + (obj1Y-obj2Y)**2)
 }
 function Say(value, func = () => {return;}){
     talkWindow.style.display = _dis(true)
