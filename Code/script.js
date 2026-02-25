@@ -249,7 +249,7 @@ document.addEventListener("touchmove", (event) => {
         }
     }
 })
-document.addEventListener("touchcancel", () => {
+document.addEventListener("touchend", () => {
     if (isDrag){
         isDrag = false
         EntityList.forEach(element => {
