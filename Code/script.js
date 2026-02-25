@@ -224,13 +224,13 @@ document.addEventListener("touchstart", (event) => {
         element.Select()
     });
     isDrag = true;
-    clickedX = event/*.touches[0]*/.clientX;
-    clickedY = event/*.touches[0]*/.clientY;
+    clickedX = event.touches[0].clientX;
+    clickedY = event.touches[0].clientY;
     Selector.style.display = _dis(true)
     Selector.style.top = `${clickedY}px`;
     Selector.style.left = `${clickedX}px`;
-    Selector.style.width = `${event/*.touches[0]*/.clientX - clickedX}px`
-    Selector.style.height = `${event/*.touches[0]*/.clientY - clickedY}px`
+    Selector.style.width = `${event.touches[0].clientX - clickedX}px`
+    Selector.style.height = `${event.touches[0].clientY - clickedY}px`
 })
 document.addEventListener("touchmove", (event) => {
     if (ScreenType == inGameState.TouchScreen){
@@ -241,8 +241,8 @@ document.addEventListener("touchmove", (event) => {
         Selector.style.display = _dis(true)
         Selector.style.top = `${clickedY}px`;
         Selector.style.left = `${clickedX}px`;
-        Selector.style.width = `${event/*.touches[0]*/.clientX - clickedX}px`
-        Selector.style.height = `${event/*.touches[0]*/.clientY - clickedY}px`
+        Selector.style.width = `${event.touches[0].clientX - clickedX}px`
+        Selector.style.height = `${event.touches[0].clientY - clickedY}px`
         if (event.clientX <clickedX || event.clientY < clickedY){
             Selector.style.width = "0px"
             Selector.style.height = "0px"
@@ -374,9 +374,10 @@ function languageChange(value){
 }
 /**매 프레임마다 실행 */
 function update(){
-    if (window.ontouchstart && ScreenType == inGameState.Mouse){
+    if (window.ontouchstart || window.ontouchmove || window.ontouchcancel || window.ontouchend){
         ScreenType = inGameState.TouchScreen
-        alert(_lang("Change to touch mode.", "터치 모드로 변경합니다."))
+    }else{
+        ScreenType = inGameState.Mouse
     }
     EntityList.forEach(entity => {
         entity.Update();
