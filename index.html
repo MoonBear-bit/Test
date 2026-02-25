@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en kr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,6 +41,20 @@
     </div>
     <!--드래그 선택 UI-->
     <div class="Layer-Object-UI Selector" id="Selector"></div>
+    <!--자원 상태 창-->
+    <div class="hideUI" style="top: 0px; left: 0px;" id="items">
+        <div class="Item2 gold hideText" style="top: 0.8vh;"></div>
+        <p style="font-size: 2.5vh; top: -1vh; display: inline;" class="hideText" id="gold"></p>
+        <div class="Item2 diamond hideText" style="top: 5.5vh;"></div>
+        <p style="font-size: 2vh; top: 4.9vh;" display: inline; class="hideText" id="diamond"></p>
+        <div class="Item2 wood hideText" style="top: 10vh;"></div>
+        <p style="font-size: 2.5vh; top: 8.2vh; display: inline;" class="hideText" id="wood"></p>
+        <div class="Item2 rock hideText" style="top: 14vh;"></div>
+        <p style="font-size: 2.5vh; top: 12vh; display: inline;" class="hideText" id="rock"></p>
+        <div class="Item2 iron hideText" style="top: 18vh;"></div>
+        <p style="font-size: 2.5vh; top: 16.5vh; display: inline;" class="hideText" id="iron"></p>
+    </div>
+    <button class="button" id="roulette"><strong>new Object<br><small><small>(10 gold)</small></small></strong></button>
     <script src="./Code/script.js"></script>
 </body>
 </html>

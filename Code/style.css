@@ -1,3 +1,6 @@
+p, div, td {
+    word-break: keep-all;
+}
 body{
     position: absolute;
     background-color: black;
@@ -8,6 +11,7 @@ body{
     left: 0px;
     width: 100%;
     height: 100%;
+    background-color: black;
 }
 .Entity{
     position: absolute;
@@ -17,14 +21,12 @@ body{
     border-radius: 50%;
     transform: translate(-50%, -50%);
     cursor: pointer;
+    border: 0.25vw solid gray;
+    text-align: center;
+    align-content: center;
 }
 .Entity:hover{
-    background-color: gray;
     transform: scale(1.1) translate(-50%, -50%);
-}
-.Entity:active{
-    background-color: darkgray;
-    transform: scale(1.2) translate(-50%, -50%);
 }
 .Item{
     position: absolute;
@@ -34,9 +36,17 @@ body{
     border-radius: 10%;
     transform: translate(-50%, -50%);
     cursor: help;
+    border: 0.25vw solid white;
 }
 .Item:hover{
     transform: scale(1.2) translate(-50%, -50%);
+}
+.Item2{
+    width: 1.75vw;
+    height: 1.25vh;
+    border-radius: 10%;
+    cursor: help;
+    border: 0.25vh solid white;
 }
 .centerW{
     position: absolute;
@@ -47,6 +57,26 @@ body{
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
+}
+.button{
+    position:absolute; 
+    top: 85vh; 
+    left: 0vw; 
+    width: 15vh; 
+    height: 15vh; 
+    background-color: black; 
+    color: white; 
+    border: 0.25vw solid white; 
+    font-size: 3vh;
+}
+.button:hover{
+    transform: scale(1.1);
+}
+.button:active{
+    background-color: white;
+    border: 0px;
+    transform: scale(1.2);
+    color: black;
 }
 .publicText{
     color: white;
@@ -88,6 +118,27 @@ body{
     background-color: rgba(255, 255, 255, 0.75);
     border: 0.25vw dashed white;
 }
+.hideUI{
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0);
+    z-index: 20;
+}
+.hideUI:hover{
+    z-index: 1;
+    border: 0px;
+}
+.hideUI:hover > .hideText{
+    background-color: rgba(0, 0, 0, 0);
+    color: rgba(0, 0, 0, 0);
+    text-shadow: 2px 2px rgba(97, 90, 90, 0);
+    z-index: 1;
+    border: 0px;
+}
+.hideText{
+    position: absolute;
+    text-shadow: 2px 2px rgb(97, 90, 90);
+    color: white;
+}
 .Layer-Background{
     z-index: 1;
     color: white;
@@ -108,4 +159,19 @@ body{
 }
 .Layer-Infinity{
     z-index: 40;
+}
+.gold{
+    background-color: gold;
+}
+.diamond{
+    background-color: cyan;
+}
+.wood{
+    background-color: brown;
+}
+.rock{
+    background-color: gray;
+}
+.iron{
+    background-color: silver;
 }

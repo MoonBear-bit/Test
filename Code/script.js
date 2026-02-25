@@ -3,12 +3,29 @@ let settingWindow = document.getElementById("settingWindow")
 let talkWindow = document.getElementById("talkWindow")
 let talkBox = document.getElementById("talkBox")
 let Selector = document.getElementById("Selector")
+let itemWindow = document.getElementById("items")
+let roulette = document.getElementById("roulette")
+let itemsUI = {
+    gold: document.getElementById("gold"),
+    diamond: document.getElementById("diamond"),
+    wood: document.getElementById("wood"),
+    rock: document.getElementById("rock"),
+    iron: document.getElementById("iron")
+}
 let language = "en"
 let isDrag = false
 let clicked;
+itemWindow.style.display = _dis(false)
+roulette.style.display = _dis(false)
 Selector.style.display = _dis(false)
 talkWindow.style.display = _dis(false)
 settingWindow.style.display = _dis(false);
+roulette.onclick = () => {
+    if (items.gold >= 10){
+        items.gold -= 10
+        new Entity(0, 0, 100, entityState.Idle, 50, 50)
+    }
+}
 document.getElementById("newGame").onclick = () => {
     startGame(true)
 }
@@ -74,7 +91,8 @@ let items = {
 }
 class Item{
     data = {
-        itemKind: ""
+        itemKind: "",
+        isTaked: false,
     }
     object = null;
     constructor(kind){
@@ -112,10 +130,13 @@ class Item{
         this.object.id = `Item v${countItem}`
         this.object.addEventListener("click", () => {
             EntityList.forEach(element => {
-                if (_distance(this.object, element.object) <= 4.5){
+                if (_distance(this.object, element.object) <= 4.5 && !this.data.isTaked){
+                    this.data.isTaked = true
                     element.data.nowState = entityState.Work;
                     setTimeout(() => {
                         element.data.nowState = entityState.Idle
+                        element.data.exp += 7
+                        console.log(element.data.exp)
                         switch(this.data.itemKind){
                             case itemsKind.gold:
                                 items.gold++
@@ -187,6 +208,10 @@ class Entity{
     }
     /**매 프레임 실행하시오 */
     Update() {
+        if (this.data.exp > 100){
+            this.data.exp -= 100
+            this.data.level++
+        }
         let nowStateTXT = "";
         switch (this.data.nowState){
             case entityState.Attack:
@@ -435,11 +460,13 @@ function Say(value, func = () => {return;}){
     })
 }
 function startGame(isFirst = false){
+    itemWindow.style.display = _dis(true);
+    roulette.style.display = _dis(true);
     lobby.style.display = _dis(false);
     loadType = inGameState.LoadType_Load
     if (isFirst){
         loadType = inGameState.LoadType_New
-        new Entity(0, 0, 100, entityState.Idle, 50, 25)
+        new Entity(0, 0, 100, entityState.Idle, 50, 50)
         if (document.getElementById("tutorialCheckBox").checked){
             Tutorial();
         }
@@ -447,8 +474,7 @@ function startGame(isFirst = false){
         let EntityCount = _load("EntityCount")
         count = 0
         for (let i = 0; i < EntityCount; i++){
-            console.log(i)
-            new Entity(_load(`Entity v${count}-level`), _load(`Entity v${count}-exp`), _load(`Entity v${count}-hp`), _load(`Entity v${count}-state`),
+            new Entity(Number(_load(`Entity v${count}-level`)), Number(_load(`Entity v${count}-exp`)),Number( _load(`Entity v${count}-hp`)), _load(`Entity v${count}-state`),
                 _load(`Entity v${count}-x`), _load(`Entity v${count}-y`))
         }
         nowStateInGame = _load("GameState")
@@ -467,6 +493,7 @@ function startGame(isFirst = false){
     }, 10000)
 }
 function createItem(){
+    if (ItemList.length > 10) return;
     let whatIsThis = Math.floor(Math.random() * 5)
     switch(whatIsThis){
         case 0:
@@ -489,16 +516,22 @@ function createItem(){
 function Tutorial(){
     Say(_lang("Welcome!", "환영합니다!"), () => {
     Say(_lang("Let me tell you about this world.", "이 세계에 대해 알려드리겠습니다."), () => {
-    Say(_lang("First, let me explain how to move the object in front of you.", "첫 번째로, 당신의 앞에 있는 개체를 움직이는 방법에 대해 설명해드리죠."), () => {
+    Say(_lang("First, let me explain how to move the object in front of you. (I mean the white circle.)", "첫 번째로, 당신의 앞에 있는 개체를 움직이는 방법에 대해 설명해드리죠. (하얀 원 말입니다.)"), () => {
     Say(_lang("Select the desired object by dragging right it and click where you want to move it.","오른쪽 드래그를 통해 원하는 개체를 선택하고, 이동을 원하는 위치를 클릭하세요."), () => {
+    Say(_lang("On mobile, you need to drag with two fingers.", "모바일의 경우에는 두 손가락으로 드래그해야 합니다."), () => {
     Say(_lang("I'll give you a moment. Try it yourself.", "잠깐의 시간을 드리겠습니다. 직접 해보시죠"), () => {
     setTimeout(() =>{
     Say(_lang("Please note that left dragging is not possible.", "참고로 왼쪽 드래그는 불가능합니다."), () => {
-    Say(_lang("On mobile, you need to drag with two fingers.", "모바일의 경우에는 두 손가락으로 드래그해야 합니다."), () => {
-        
+    Say(_lang("Haha, are you curious about the square on the black ground?", "하하, 검은 땅 위에 있는 사각형이 궁금하신가요?"), () => {
+    Say(_lang("It's probably a natural resource.", "그건 아마도 천연자원일 겁니다."), () => {
+    Say(_lang("", "혹시 그것을 가져와 주실 수 있나요?"), () => {
+    
+    })
+    })
     })
     })
     },10000)
+    })
     })
     })
     })
@@ -530,9 +563,32 @@ function languageChange(value){
     document.getElementById("settingEnd").innerHTML = _lang("<strong>END</strong>", "<strong>확인</strong>")
     document.getElementById("tx-tutorial").innerHTML = _lang('<strong>Tutorial</strong> <input type="checkbox" class="publicButton" style="height: 1.25vw; width: 1.25vw;" id="tutorialCheckBox">', 
         '<strong>튜토리얼</strong> <input type="checkbox" class="publicButton" style="height: 1.25vw; width: 1.25vw;" id="tutorialCheckBox">')
+    roulette.innerHTML = _lang("<strong>new Object<br><small><small>(10 gold)</small></small></strong>", "<strong>새 개체<br><small><small>(10 황금)</small></small></strong>")
 }
 /**매 프레임마다 실행 */
 function update(){
+    itemsUI.gold.innerHTML = `<strong>${_lang("gold", "황금")}:${items.gold}</strong>`
+    itemsUI.diamond.innerHTML = `<strong>${_lang("diamond", "다이아몬드")}:${items.diamond}</strong>`
+    itemsUI.wood.innerHTML = `<strong>${_lang("wood", "목재")}:${items.wood}</strong>`
+    itemsUI.rock.innerHTML = `<strong>${_lang("rock", "석재")}:${items.rock}</strong>`
+    itemsUI.iron.innerHTML = `<strong>${_lang("iron", "금속")}:${items.iron}</strong>`
+    EntityList.forEach(element1 => {
+        element1.object.innerHTML = `<strong>${element1.data.level}</strong>`
+        EntityList.forEach(element2 => {
+            if (_distance(element1.object, element2.object) < 2 && element1 != element2){
+                if (Number(element1.object.style.left.replace("vw","")) - Number(element2.object.style.left.replace("vw","")) < 0){
+                    element1.object.style.left = `${Number(element1.object.style.left.replace("vw","")) - 0.1}vw`;
+                }else{
+                    element1.object.style.left = `${Number(element1.object.style.left.replace("vw","")) + 0.1}vw`;
+                }
+                if (Number(element1.object.style.top.replace("vh","")) - Number(element2.object.style.top.replace("vh","")) < 0){
+                    element1.object.style.top = `${Number(element1.object.style.top.replace("vh","")) - 0.1}vh`;
+                }else{
+                    element1.object.style.top = `${Number(element1.object.style.top.replace("vh","")) + 0.1}vh`;
+                }
+            }
+        });
+    });
     if ((window.ontouchstart || window.ontouchmove || window.ontouchcancel || window.ontouchend) && ScreenType == inGameState.Mouse){
         ScreenType = inGameState.TouchScreen
     }else{
