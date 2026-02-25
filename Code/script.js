@@ -375,6 +375,7 @@ function languageChange(value){
 /**매 프레임마다 실행 */
 function update(){
     if (window.ontouchstart || window.ontouchmove || window.ontouchcancel || window.ontouchend){
+        alert("Change Mode")
         ScreenType = inGameState.TouchScreen
     }else{
         ScreenType = inGameState.Mouse
