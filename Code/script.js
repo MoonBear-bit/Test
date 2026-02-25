@@ -216,6 +216,41 @@ document.addEventListener("mouseup", (event) => {
         Selector.style.display = _dis(false)
     }
 })
+document.addEventListener("touchstart", (event) => {
+    EntityList.forEach(element => {
+        element.Select()
+    });
+    isDrag = true;
+    clickedX = mouseX;
+    clickedY = mouseY;
+    Selector.style.display = _dis(true)
+    Selector.style.top = `${clickedY}px`;
+    Selector.style.left = `${clickedX}px`;
+    Selector.style.width = `${Math.abs(event.clientX - clickedX)}px`
+    Selector.style.height = `${Math.abs(event.clientY - clickedY)}px`
+})
+document.addEventListener("touchmove", (event) => {
+    if (isDrag){
+        Selector.style.display = _dis(true)
+        Selector.style.top = `${clickedY}px`;
+        Selector.style.left = `${clickedX}px`;
+        Selector.style.width = `${Math.abs(event.clientX - clickedX)}px`
+        Selector.style.height = `${Math.abs(event.clientY - clickedY)}px`
+        if (event.clientX <clickedX || event.clientY < clickedY){
+            isDrag = false
+            Selector.style.display = _dis(false)
+        }
+    }
+})
+document.addEventListener("touchend", (event) => {
+    if (event.button == 0 && isDrag){
+        isDrag = false
+        EntityList.forEach(element => {
+            element.Select()
+        });
+        Selector.style.display = _dis(false)
+    }
+})
 /**화면 resize 감지 시 실행. addEventListener 외의 다른 방식 */
 function resize(){
     bodyW = window.innerWidth;
