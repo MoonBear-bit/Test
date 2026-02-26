@@ -12,9 +12,20 @@ let itemsUI = {
     rock: document.getElementById("rock"),
     iron: document.getElementById("iron")
 }
+let entityDataUI = {
+    main: document.getElementById("dataWindow"),
+    name: document.getElementById("nameData"),
+    hp: document.getElementById("hpData"),
+    level: document.getElementById("levelData"),
+    exp: document.getElementById("expData"),
+    power: document.getElementById("powerData"),
+    state: document.getElementById("stateData"),
+}
 let language = "en"
 let isDrag = false
 let clicked;
+let stateObject;
+entityDataUI.main.style.display = _dis(false)
 itemWindow.style.display = _dis(false)
 roulette.style.display = _dis(false)
 Selector.style.display = _dis(false)
@@ -23,7 +34,7 @@ settingWindow.style.display = _dis(false);
 roulette.onclick = () => {
     if (items.gold >= 10){
         items.gold -= 10
-        new Entity(0, 0, 100, entityState.Idle, 50, 50)
+        new Entity(0, 0, 100, 1, entityState.Idle, 50, 50)
     }
 }
 document.getElementById("newGame").onclick = () => {
@@ -184,11 +195,20 @@ class Entity{
         level: 0,
         exp: 0,
         nowState: entityState.Idle,
-        selected: false
+        selected: false,
+        power: 1
     }
     object = null;
-    /**첫 시작 및 이어하기 */
-    constructor(level, exp, hp, nowS, x, y){
+    /**
+     * @param {number} level 
+     * @param {number} exp 
+     * @param {number} hp 
+     * @param {number} power 
+     * @param {entityState} nowS 
+     * @param {number} x 
+     * @param {number} y 
+     */
+    constructor(level, exp, hp, power, nowS, x, y){
         this.data.selected = false;
         this.data.nowState = nowS;
         this.object = document.createElement("div");
@@ -197,11 +217,20 @@ class Entity{
         this.object.style.left = `${x}vw`
         this.object.id = `Entity v${count}`
         this.data.hp = hp;
+        this.data.power = power
         if (hp < 0){
             this.data.nowState = entityState.Die;
         }
         this.data.level = level;
         this.data.exp = exp;
+        this.object.addEventListener("mouseenter", () => {
+            stateObject = this;
+        })
+        this.object.addEventListener("mouseleave", () => {
+            if (stateObject == this){
+                stateObject = null;
+            }
+        })
         EntityList.push(this)
         document.body.appendChild(this.object)
         count++;
@@ -211,6 +240,7 @@ class Entity{
         if (this.data.exp > 100){
             this.data.exp -= 100
             this.data.level++
+            this.data.power +=0.2
         }
         let nowStateTXT = "";
         switch (this.data.nowState){
@@ -230,7 +260,6 @@ class Entity{
                 nowStateTXT = "Work";
                 break;
         }
-        this.object.title = `${this.object.id}  (${nowStateTXT})`
         if (this.data.nowState == entityState.Die){
             this.object.style.backgroundColor = 'darkred';
             return;
@@ -305,6 +334,7 @@ class Entity{
         _save(`${this.object.id}-level`, this.data.level)
         _save(`${this.object.id}-exp`, this.data.exp)
         _save(`${this.object.id}-hp`, this.data.hp)
+        _save(`${this.object.id}-power`, this.data.power)
     }
 }
 document.addEventListener("mousedown", (event) => {
@@ -466,7 +496,7 @@ function startGame(isFirst = false){
     loadType = inGameState.LoadType_Load
     if (isFirst){
         loadType = inGameState.LoadType_New
-        new Entity(0, 0, 100, entityState.Idle, 50, 50)
+        new Entity(0, 0, 100, 1, entityState.Idle, 50, 50)
         if (document.getElementById("tutorialCheckBox").checked){
             Tutorial();
         }
@@ -474,8 +504,8 @@ function startGame(isFirst = false){
         let EntityCount = _load("EntityCount")
         count = 0
         for (let i = 0; i < EntityCount; i++){
-            new Entity(Number(_load(`Entity v${count}-level`)), Number(_load(`Entity v${count}-exp`)),Number( _load(`Entity v${count}-hp`)), _load(`Entity v${count}-state`),
-                _load(`Entity v${count}-x`), _load(`Entity v${count}-y`))
+            new Entity(Number(_load(`Entity v${count}-level`)), Number(_load(`Entity v${count}-exp`)), Number( _load(`Entity v${count}-hp`)), Number( _load(`Entity v${count}-power`)), 
+                _load(`Entity v${count}-state`), _load(`Entity v${count}-x`), _load(`Entity v${count}-y`))
         }
         nowStateInGame = _load("GameState")
         items.gold = _load("gold")
@@ -567,6 +597,41 @@ function languageChange(value){
 }
 /**매 프레임마다 실행 */
 function update(){
+    if (stateObject){
+        entityDataUI.main.style.display = _dis(true);
+        entityDataUI.main.style.top = `${(mouseY + _vwPx(1 + Number(entityDataUI.main.style.height.replace("vw",""))) > window.innerHeight)?
+            mouseY - 10 - _vwPx(Number(entityDataUI.main.style.height.replace("vw",""))) : 
+            mouseY + 10}px`
+        entityDataUI.main.style.left = `${(mouseX + _vwPx(1 + Number(entityDataUI.main.style.width.replace("vw",""))) > window.innerWidth)?
+            mouseX - 10 - _vwPx(Number(entityDataUI.main.style.width.replace("vw",""))) : 
+            mouseX + 10}px`
+        entityDataUI.name.innerHTML = _lang(`<strong>Name:${stateObject.object.id}</strong>`, `<strong>이름:${stateObject.object.id}</strong>`)
+        entityDataUI.hp.innerHTML = _lang(`<strong>HP:${stateObject.data.hp}</strong>`, `<strong>생명력:${stateObject.data.hp}</strong>`)
+        entityDataUI.level.innerHTML = _lang(`<strong>Level:${stateObject.data.level}</strong>`, `<strong>등급:${stateObject.data.level}</strong>`)
+        entityDataUI.exp.innerHTML = _lang(`<strong>EXP:${stateObject.data.exp}</strong>`, `<strong>경험:${stateObject.data.exp}</strong>`)
+        entityDataUI.power.innerHTML = _lang(`<strong>Power:${stateObject.data.power}</strong>`, `<strong>힘:${stateObject.data.power}</strong>`)
+        let nowStateTXT = "";
+        switch (stateObject.data.nowState){
+            case entityState.Attack:
+                nowStateTXT = "Attack";
+                break;
+            case entityState.Die:
+                nowStateTXT = "Died";
+                break;
+            case entityState.Idle:
+                nowStateTXT = "Idle";
+                break;
+            case entityState.Move:
+                nowStateTXT = "Move";
+                break;
+            case entityState.Work:
+                nowStateTXT = "Work";
+                break;
+        }
+        entityDataUI.state.innerHTML = _lang(`<strong>State:${nowStateTXT}</strong>`, `<strong>상태:${nowStateTXT}</strong>`)
+    }else{
+        entityDataUI.main.style.display = _dis(false);
+    }
     itemsUI.gold.innerHTML = `<strong>${_lang("gold", "황금")}:${items.gold}</strong>`
     itemsUI.diamond.innerHTML = `<strong>${_lang("diamond", "다이아몬드")}:${items.diamond}</strong>`
     itemsUI.wood.innerHTML = `<strong>${_lang("wood", "목재")}:${items.wood}</strong>`
