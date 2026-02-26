@@ -232,6 +232,11 @@ class Entity{
                 stateObject = null;
             }
         })
+        if (_distance(this.object, roulette) < _vhPx(16)){
+            this.object.remove()
+            delete this;
+            return;
+        }
         EntityList.push(this)
         document.body.appendChild(this.object)
         count++;
