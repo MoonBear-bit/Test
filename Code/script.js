@@ -5,6 +5,7 @@ let talkBox = document.getElementById("talkBox")
 let Selector = document.getElementById("Selector")
 let itemWindow = document.getElementById("items")
 let roulette = document.getElementById("roulette")
+let background = document.getElementById("Background")
 let itemsUI = {
     gold: document.getElementById("gold"),
     diamond: document.getElementById("diamond"),
@@ -428,6 +429,12 @@ document.addEventListener("touchend", (event) => {
         Selector.style.display = _dis(false)
     }
 })
+background.addEventListener("mousemove", () => {
+    stateObject = null;
+})
+background.addEventListener("click", () => {
+    stateObject = null;
+})
 /**화면 resize 감지 시 실행. addEventListener 외의 다른 방식 */
 function resize(){
     bodyW = window.innerWidth;
@@ -554,7 +561,7 @@ function Tutorial(){
     Say(_lang("Please note that left dragging is not possible.", "참고로 왼쪽 드래그는 불가능합니다."), () => {
     Say(_lang("Haha, are you curious about the square on the black ground?", "하하, 검은 땅 위에 있는 사각형이 궁금하신가요?"), () => {
     Say(_lang("It's probably a natural resource.", "그건 아마도 천연자원일 겁니다."), () => {
-    Say(_lang("", "혹시 그것을 가져와 주실 수 있나요?"), () => {
+    Say(_lang("Could you please bring it to me?", "혹시 그것을 가져와 주실 수 있나요?"), () => {
     
     })
     })
