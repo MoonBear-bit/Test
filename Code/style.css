@@ -4,6 +4,7 @@ p, div, td {
 body{
     position: absolute;
     background-color: black;
+    overflow: hidden;
 }
 .Background{
     top: -1%;
