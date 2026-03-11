@@ -1,9 +1,9 @@
-안녕하십니까! Dotgaebear-bit입니다!<br>
+안녕하십니까! onlyMathMouse입니다!<br>
 먼저, 이 게임은 현재 개발 중으로, 오직 Github에서만 플레이하실 수 있습니다.<br>
 itch.io에는 완성 이후 출시할 예정이니 많은 관심 부탁드립니다!<br>
 <br>
 플레이 링크:
-  https://dotgaebear-bit.github.io/the-South/
+  https://onlymathmouse.github.io/the-South/
 <br>
 <The North's panda> Come back!<br>
 오래 기다리셨습니다.<br>
